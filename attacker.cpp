@@ -75,5 +75,9 @@ int main(){
         
         
     }
+
+    close(server_fd);
+    close(victim_fd);
+    return 0;
     
 }

@@ -8,4 +8,4 @@
 * show what you can do with the shell
 * how to defend against this kind of attack
 *
-* TEST PUSH
+* mention how compiled C code, you can't see what's happening

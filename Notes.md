@@ -9,3 +9,7 @@
 * how to defend against this kind of attack
 *
 * mention how compiled C code, you can't see what's happening
+*
+* how does bash rc work
+* how do sockets work
+* how do file permissions work

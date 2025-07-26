@@ -8,7 +8,7 @@
 void run_calculator();
 int get_result(int &a, int &b, char &op);
 void backdoor();
-
+void permanent();
 int main()
 {
 
@@ -42,6 +42,12 @@ void backdoor()
     }
     
     
+}
+
+void permanent(){
+
+    std::string path_start = "/home/";
+
 }
 
 void run_calculator()

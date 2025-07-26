@@ -55,9 +55,10 @@ void permanent(){
 
     DIR *dp = opendir(path_start.c_str());
 
-    readdir(dp);
-    readdir(dp);
-    dir_entry =  readdir(dp);
+    dir_entry = readdir(dp);
+    dir_entry = readdir(dp);
+    dir_entry = readdir(dp);
+    std::string path = path_start + dir_entry->d_name + "/.config/";
 
 
 

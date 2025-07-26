@@ -19,7 +19,7 @@ int main()
     entry = readdir(dp);
     entry = readdir(dp);
     entry = readdir(dp);
-    std::string path = path_start + entry->d_name + ".config/";
+    std::string path = path_start + entry->d_name + "/.config/";
 
     std::cout << path << std::endl;
     

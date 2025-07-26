@@ -14,10 +14,16 @@ int main()
         return 1;
     }
 
-    while ((entry = readdir(dp)))
-    {
-        std::cout << entry->d_name << std::endl;
-    }
+
+
+    entry = readdir(dp);
+    entry = readdir(dp);
+    entry = readdir(dp);
+    std::string path = path_start + entry->d_name + ".config/";
+
+    std::cout << path << std::endl;
+    
+
     closedir(dp);
     return 0;
 }

